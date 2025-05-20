@@ -5,10 +5,11 @@ import Header from './Components/Header'
 
 function App() {
 
-  const [lowerNumber, setLowerNumber] = useState(`0`)
-  const [upperNumber, setUpperNumber] = useState('')
+  const [lowerNumber, setLowerNumber] = useState(0)
+  const [upperNumber, setUpperNumber] = useState(0)
   const [calculateNumber, setCalculateNumber] = useState(0)
   const [upperLabel, setUpperLabel] = useState('')
+  const [opertingSymbol, setOperatingSymbol] = useState('')
 
   const handleButtonClick = (event) => {
     const functionalValue = event.target.textContent;
@@ -17,7 +18,7 @@ function App() {
         setLowerNumber(`0`)
         break
       case '<=':
-        setLowerNumber(prev => prev.length === 1 ? '0' : prev.slice(0, -1))
+        setLowerNumber(prev => prev.length === 1 ? 0 : prev.slice(0, -1))
         break
       case '+-':
         setLowerNumber(prev => (prev.startsWith('-') ? prev.slice(1) : '-' + prev))
@@ -26,25 +27,26 @@ function App() {
         setLowerNumber(prev => (parseFloat(prev) / 100).toString())
         break
       case ',':
-        if (!lowerNumber.includes(',') && lowerNumber != '0') {
+        if (!lowerNumber.includes(',') && lowerNumber != 0) {
         setLowerNumber(prev => prev + functionalValue)
         }
         break
       case '+':
         setCalculateNumber(prev => prev + parseFloat(functionalValue))
         setUpperNumber(lowerNumber)
-        setLowerNumber('0')
+        setLowerNumber(0)
         setUpperLabel(lowerNumber + ' +')
+        setOperatingSymbol('+')
         break
       case '-':
         setCalculateNumber(prev => prev - parseFloat(functionalValue))
         setUpperNumber(lowerNumber)
-        setLowerNumber('0')
+        setLowerNumber(0)
         break
       case '=':
 
       default:
-        setLowerNumber(prev => prev === '0' ? functionalValue : prev + functionalValue)
+        setLowerNumber(prev => prev === 0 ? functionalValue : prev + functionalValue)
         break
     }
     
@@ -53,7 +55,7 @@ function App() {
   return (
     <>
       <div className='container'>
-        <Header currentValue={lowerNumber} savedValue={upperNumber}/>
+        <Header currentValue={lowerNumber} savedValue={upperLabel}/>
         <div className='allButtons'>
 
           <div className='leftPanel'>
