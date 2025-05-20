@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.container {
+  background-color: black;
+  width: 330px;
+  height: 525px;
+  margin: 150px auto;
+}
+
+header {
+  display:grid;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: right;
+  height: 100px;
+  padding: 20px 20px 0 0;
+}
+
+.mainLabel {
+  font-size: 70px;
+}
+
+.upperLabel {
+  font-size: 25px;
+}
+
+.btn {
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+  background-color: #333333;
+  font-size: 35px;
+  border-style: none;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btnZero {
+  width: 155px;
+  height: 75px;
+}
+
+.btnDel {
+  background-color: #a5a5a5;
+}
+
+.btnFunc {
+  background-color: #fe9505;
+}
+
+.allButtons {
+  display: flex;
+}
+
+.leftPanel {
+  width: 245px;
+  display: flex;
+  flex-direction: column;
+}
+
+.deleteButtons {
+  /*background-color: blue;*/
+  height: 85px;
+  width: 245px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.numberButtons {
+  width: 245px;
+  height: 400px;
+  /*background-color: orange;*/
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 2px;
+}
+
+.functionButtons {
+  /*background-color: green;*/
+  width: 105px;
+  height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding-right: 5px;
+}
