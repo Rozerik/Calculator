@@ -5,48 +5,87 @@ import Header from './Components/Header'
 
 function App() {
 
-  const [lowerNumber, setLowerNumber] = useState(0)
-  const [upperNumber, setUpperNumber] = useState(0)
-  const [calculateNumber, setCalculateNumber] = useState(0)
+  const [lowerNumber, setLowerNumber] = useState('0')
+  const [upperNumber, setUpperNumber] = useState('0')
   const [upperLabel, setUpperLabel] = useState('')
-  const [opertingSymbol, setOperatingSymbol] = useState('')
+  const [ACbutton, setACButton] = useState(true)
+
+  const funcButtonsHandler = (mark) => {
+    setUpperNumber(lowerNumber)
+    setLowerNumber('0')
+    setUpperLabel(lowerNumber + ` ${mark}`)
+  }
+
+  const resetLabelandUpperNumber = () => {
+    setUpperNumber('0')
+    setUpperLabel('')
+    setACButton(true)
+  }
 
   const handleButtonClick = (event) => {
     const functionalValue = event.target.textContent;
     switch(functionalValue) {
+
       case 'AC':
         setLowerNumber(`0`)
         break
+
       case '<=':
-        setLowerNumber(prev => prev.length === 1 ? 0 : prev.slice(0, -1))
+        setLowerNumber(prev => prev.length === 1 ? '0' : prev.slice(0, -1))
         break
+
       case '+-':
+        if (lowerNumber === '0') break
         setLowerNumber(prev => (prev.startsWith('-') ? prev.slice(1) : '-' + prev))
         break
+
       case '%':
         setLowerNumber(prev => (parseFloat(prev) / 100).toString())
         break
+
       case ',':
-        if (!lowerNumber.includes(',') && lowerNumber != 0) {
-        setLowerNumber(prev => prev + functionalValue)
+        if (!lowerNumber.includes(',') && lowerNumber != '0') {
+        setLowerNumber(prev => prev + ',')
         }
         break
-      case '+':
-        setCalculateNumber(prev => prev + parseFloat(functionalValue))
-        setUpperNumber(lowerNumber)
-        setLowerNumber(0)
-        setUpperLabel(lowerNumber + ' +')
-        setOperatingSymbol('+')
-        break
-      case '-':
-        setCalculateNumber(prev => prev - parseFloat(functionalValue))
-        setUpperNumber(lowerNumber)
-        setLowerNumber(0)
-        break
-      case '=':
 
+      case '+':
+      case '-':
+      case 'x':
+      case '/':
+        funcButtonsHandler(functionalValue)
+        setACButton(false)
+        break
+
+      //ОПЕРАЦИЯ РАВЕНСТВА
+      case '=':
+        if (upperLabel === '') break
+        switch(upperLabel.slice(-1)) {
+          case '+':
+            setLowerNumber(prev => (parseFloat(upperNumber) + parseFloat(prev)).toString())
+            resetLabelandUpperNumber()
+          break
+
+          case '-':
+            setLowerNumber(prev => (parseFloat(upperNumber) - parseFloat(prev)).toString())
+            resetLabelandUpperNumber()
+          break
+
+          case 'x':
+            setLowerNumber(prev => (parseFloat(upperNumber) * parseFloat(prev)).toString())
+            resetLabelandUpperNumber()
+          break
+
+          case '/':
+            setLowerNumber(prev => (parseFloat(upperNumber) / parseFloat(prev)).toFixed(2).toString())
+            resetLabelandUpperNumber()
+          break
+
+        }
+        break
       default:
-        setLowerNumber(prev => prev === 0 ? functionalValue : prev + functionalValue)
+        setLowerNumber(prev => prev === '0' ? functionalValue : prev + functionalValue)
+        setACButton(false)
         break
     }
     
@@ -61,7 +100,12 @@ function App() {
           <div className='leftPanel'>
             
             <div className='numberButtons'>
-              <Button className="btn btnDel" onClick={handleButtonClick}>AC</Button>
+
+              <Button className="btn btnDel" onClick={handleButtonClick}>
+                {(ACbutton && 'AC')}
+                {(!ACbutton && '<=')}
+              </Button>
+
               <Button className="btn btnDel" onClick={handleButtonClick}>+-</Button>
               <Button className="btn btnDel" onClick={handleButtonClick}>%</Button>
               <Button className="btn" onClick={handleButtonClick}>1</Button>

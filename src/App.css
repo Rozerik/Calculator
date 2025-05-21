@@ -12,20 +12,30 @@
 }
 
 header {
-  display:grid;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   height: 100px;
-  padding: 20px 20px 0 0;
+  margin-bottom: 15px;
+  padding-right: 20px;
+}
+
+span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainLabel {
   font-size: 70px;
+  width: auto;
+  height: 60px;
 }
 
 .upperLabel {
   font-size: 25px;
+  width: auto;
+  height: 40px;
 }
 
 .btn {
