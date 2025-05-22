@@ -45,6 +45,9 @@ span {
   background-color: #333333;
   font-size: 35px;
   border-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
@@ -57,6 +60,7 @@ span {
 }
 
 .btnDel {
+  font-family: sans-serif;
   background-color: #a5a5a5;
 }
 
@@ -65,28 +69,7 @@ span {
 }
 
 .allButtons {
-  display: flex;
-}
-
-.leftPanel {
-  width: 245px;
-  display: flex;
-  flex-direction: column;
-}
-
-.deleteButtons {
-  /*background-color: blue;*/
-  height: 85px;
-  width: 245px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-
-.numberButtons {
-  width: 245px;
+  width: 330px;
   height: 400px;
   /*background-color: orange;*/
   display: flex;
@@ -95,16 +78,4 @@ span {
   justify-content: center;
   align-items: center;
   padding-left: 2px;
-}
-
-.functionButtons {
-  /*background-color: green;*/
-  width: 105px;
-  height: 400px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  padding-right: 5px;
 }

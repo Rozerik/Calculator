@@ -1,136 +1,29 @@
-import Button from './Components/Button'
-import { useState } from 'react'
+import { useState} from 'react'
 import './App.css'
 import Header from './Components/Header'
+import Buttons from './Components/ButtonsComponent'
 
 function App() {
 
   const [lowerNumber, setLowerNumber] = useState('0')
   const [upperNumber, setUpperNumber] = useState('0')
   const [upperLabel, setUpperLabel] = useState('')
-  const [ACbutton, setACButton] = useState(true)
-
-  const funcButtonsHandler = (mark) => {
-    setUpperNumber(lowerNumber)
-    setLowerNumber('0')
-    setUpperLabel(lowerNumber + ` ${mark}`)
-  }
-
-  const resetLabelandUpperNumber = () => {
-    setUpperNumber('0')
-    setUpperLabel('')
-    setACButton(true)
-  }
-
-  const handleButtonClick = (event) => {
-    const functionalValue = event.target.textContent;
-    switch(functionalValue) {
-
-      case 'AC':
-        setLowerNumber(`0`)
-        break
-
-      case '<=':
-        setLowerNumber(prev => prev.length === 1 ? '0' : prev.slice(0, -1))
-        break
-
-      case '+-':
-        if (lowerNumber === '0') break
-        setLowerNumber(prev => (prev.startsWith('-') ? prev.slice(1) : '-' + prev))
-        break
-
-      case '%':
-        setLowerNumber(prev => (parseFloat(prev) / 100).toString())
-        break
-
-      case ',':
-        if (!lowerNumber.includes(',') && lowerNumber != '0') {
-        setLowerNumber(prev => prev + ',')
-        }
-        break
-
-      case '+':
-      case '-':
-      case 'x':
-      case '/':
-        funcButtonsHandler(functionalValue)
-        setACButton(false)
-        break
-
-      //ОПЕРАЦИЯ РАВЕНСТВА
-      case '=':
-        if (upperLabel === '') break
-        switch(upperLabel.slice(-1)) {
-          case '+':
-            setLowerNumber(prev => (parseFloat(upperNumber) + parseFloat(prev)).toString())
-            resetLabelandUpperNumber()
-          break
-
-          case '-':
-            setLowerNumber(prev => (parseFloat(upperNumber) - parseFloat(prev)).toString())
-            resetLabelandUpperNumber()
-          break
-
-          case 'x':
-            setLowerNumber(prev => (parseFloat(upperNumber) * parseFloat(prev)).toString())
-            resetLabelandUpperNumber()
-          break
-
-          case '/':
-            setLowerNumber(prev => (parseFloat(upperNumber) / parseFloat(prev)).toFixed(2).toString())
-            resetLabelandUpperNumber()
-          break
-
-        }
-        break
-      default:
-        setLowerNumber(prev => prev === '0' ? functionalValue : prev + functionalValue)
-        setACButton(false)
-        break
-    }
-    
-  }
 
   return (
     <>
       <div className='container'>
+
         <Header currentValue={lowerNumber} savedValue={upperLabel}/>
-        <div className='allButtons'>
 
-          <div className='leftPanel'>
-            
-            <div className='numberButtons'>
+        <Buttons
+          lowerNumber={lowerNumber}
+          upperNumber={upperNumber}
+          setLowerNumber={setLowerNumber}
+          setUpperNumber={setUpperNumber}
+          upperLabel={upperLabel}
+          setUpperLabel={setUpperLabel}
+        />
 
-              <Button className="btn btnDel" onClick={handleButtonClick}>
-                {(ACbutton && 'AC')}
-                {(!ACbutton && '<=')}
-              </Button>
-
-              <Button className="btn btnDel" onClick={handleButtonClick}>+-</Button>
-              <Button className="btn btnDel" onClick={handleButtonClick}>%</Button>
-              <Button className="btn" onClick={handleButtonClick}>1</Button>
-              <Button className="btn" onClick={handleButtonClick}>2</Button>
-              <Button className="btn" onClick={handleButtonClick}>3</Button>
-              <Button className="btn" onClick={handleButtonClick}>4</Button>
-              <Button className="btn" onClick={handleButtonClick}>5</Button>
-              <Button className="btn" onClick={handleButtonClick}>6</Button>
-              <Button className="btn" onClick={handleButtonClick}>7</Button>
-              <Button className="btn" onClick={handleButtonClick}>8</Button>
-              <Button className="btn" onClick={handleButtonClick}>9</Button>
-              <Button className="btn btnZero" onClick={handleButtonClick}>0</Button>
-              <Button className="btn" onClick={handleButtonClick}>,</Button>
-            </div>
-          </div>
-        
-          <div className='functionButtons'>
-              <Button className="btn btnFunc" onClick={handleButtonClick}>/</Button>
-              <Button className="btn btnFunc" onClick={handleButtonClick}>x</Button>
-              <Button className="btn btnFunc" onClick={handleButtonClick}>-</Button>
-              <Button className="btn btnFunc" onClick={handleButtonClick}>+</Button>
-              <Button className="btn btnFunc" onClick={handleButtonClick}>=</Button>
-          </div>
-          
-        </div>
       </div>
     </>
   )
