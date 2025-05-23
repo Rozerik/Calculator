@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import Button from "./Button";
 
-export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setUpperNumber, upperLabel, setUpperLabel }) {
+export default function ButtonsComponent({ lowerNumber, upperNumber, setLowerNumber, setUpperNumber, upperLabel, setUpperLabel }) {
 
-      const [ACbutton, setACButton] = useState(true)
+    const [ACbutton, setACButton] = useState(true)
+    const [operationFinished, setOperationFinished] = useState(false)
 
-      const buttons = [
+    {/*Массив кнопок (кроме "АС" - у нее другая логика, выводится в App.jsx*/}
+    const buttons = [
       { symbol: '±', className: 'btn btnDel' },
       { symbol: '%', className: 'btn btnDel' },
       { symbol: '/', className: 'btn btnFunc' },
@@ -26,22 +28,35 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
       { symbol: '=', className: 'btn btnFunc' },
     ];
 
-      useEffect(() =>{
+    {/*Хук, контролирующий изменение кнопки очистки. Если в нижнем значении 0 - тогда кнопка должна вернуться в "АС" */}
+    useEffect(() =>{
       if (lowerNumber === '0') setACButton(true)
-      }, [lowerNumber])
+    }, [lowerNumber])
 
-     const funcButtonsHandler = (mark) => {
-        setUpperNumber(lowerNumber)
-        setLowerNumber('0')
-        setUpperLabel(lowerNumber + ` ${mark}`)
-      }
+    {/*Функция обработки арифметических кнопок (+, -, *, /) */}
+    const funcButtonsHandler = (mark) => {
+      setUpperNumber(lowerNumber)
+      setLowerNumber('0')
+      setUpperLabel(lowerNumber + ` ${mark}`)
+    }
     
-      const resetLabelandUpperNumber = (symbol) => {
-        setUpperLabel(`${upperNumber} ${symbol} ${lowerNumber} =`)
-        setUpperNumber('0')
-        setACButton(true)
-      }
+    {/*Вывод строки в верхний span*/}
+    const resetLabelandUpperNumber = (symbol) => {
+      setUpperLabel(`${upperNumber} ${symbol} ${lowerNumber} =`)
+      setUpperNumber('0')
+      setACButton(true)
+    }
 
+    {/*В случае, если операция завершена клавишей "=", то верхнее число необходимо очистить от текста при нажатии других кнопок*/}
+    const clearUpperLabel = () => {
+      if (operationFinished) {
+        setUpperLabel('')
+        setUpperNumber('0')
+        setOperationFinished(false)
+      }
+    }
+
+    {/*Обработчик нажатия кнопок*/}
     const handleButtonClick = (event) => {
     const functionalValue = event.target.textContent;
     switch(functionalValue) {
@@ -57,22 +72,26 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
         if ((lowerNumber.length === 2 && lowerNumber.includes('-')) || (
         lowerNumber.length === 3 && lowerNumber[1] === `0` && lowerNumber.includes(`-`))) 
         setLowerNumber('0')
-        break
+        clearUpperLabel()
+      break
 
       case '±':
         if (lowerNumber === '0') break
         setLowerNumber(prev => (prev.startsWith('-') ? prev.slice(1) : '-' + prev))
-        break
+        clearUpperLabel()
+      break
 
       case '%':
         setLowerNumber(prev => (parseFloat(prev) / 100).toString())
-        break
+        clearUpperLabel()
+      break
 
       case ',':
         if (!lowerNumber.includes('.')) {
         setLowerNumber(prev => prev + '.')
+        clearUpperLabel()
         }
-        break
+      break
 
       case '+':
       case '-':
@@ -80,7 +99,8 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
       case '/':
         funcButtonsHandler(functionalValue)
         setACButton(false)
-        break
+        setOperationFinished(false)
+      break
 
       //ОПЕРАЦИЯ РАВЕНСТВА
       case '=':
@@ -97,7 +117,13 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
           break
 
           case 'x':
-            setLowerNumber(prev => (parseFloat(upperNumber) * parseFloat(prev)).toString())
+            setLowerNumber(prev => {
+              const multiplyResult = parseFloat(upperNumber) * parseFloat(prev)
+
+              if (Number.isInteger(multiplyResult)) return multiplyResult.toString()
+              
+              return multiplyResult.toFixed(3).replace(/\.?0+$/, '')
+            })
             resetLabelandUpperNumber(`x`)
           break
 
@@ -111,9 +137,10 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
             })
             resetLabelandUpperNumber(`/`)
           break
-
         }
-        break
+        setOperationFinished(true)
+      break
+
       default:
         if (lowerNumber.length < 15) {
           let newLowerValue;
@@ -127,7 +154,8 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
           setACButton(false);
           }
 
-          setLowerNumber(newLowerValue);
+          setLowerNumber(newLowerValue)
+          clearUpperLabel()
         }
       break
     }
@@ -135,16 +163,16 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
   }
 
     return (
-        <div className='allButtons'>
+      <div className='allButtons'>
 
-          {/*Вывод кнопки АС - не подходит под вывод через .map*/}
-            <Button className="btn btnDel" onClick={handleButtonClick}>
-              {(ACbutton && 'AC')}
-              {(!ACbutton && '⟵')}
-            </Button>
+        {/*Вывод кнопки АС - не подходит под вывод через .map*/}
+          <Button className="btn btnDel" onClick={handleButtonClick}>
+            {(ACbutton && 'AC')}
+            {(!ACbutton && '⟵')}
+          </Button>
 
-            {/*Вывод кнопок*/}
-            {buttons.map(({ symbol, className }) => (
+          {/*Вывод кнопок*/}
+          {buttons.map(({ symbol, className }) => (
             <Button
               key={symbol}
               className={className}
@@ -152,8 +180,8 @@ export default function Buttons({ lowerNumber, upperNumber, setLowerNumber, setU
             >
               {symbol}
             </Button>
-          ))}
+        ))}
 
-        </div>
+      </div>
     )
 }

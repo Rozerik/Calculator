@@ -4,11 +4,35 @@
   color: white;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
+  margin-top: 200px;
   background-color: black;
   width: 330px;
   height: 525px;
-  margin: 150px auto;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.phoneImg {
+  position: absolute;
+  height: 700px;
+  width: 380px;
+  z-index: -1;
+}
+
+.tableImg {
+  position: absolute;
+  z-index: -2;
+  height: 1080px;
+  width: 1920px;
 }
 
 header {
@@ -48,10 +72,17 @@ span {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
 }
 
 .btn:hover {
   cursor: pointer;
+}
+
+.btn:active {
+  background-color: #ffffff;
 }
 
 .btnZero {
