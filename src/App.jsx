@@ -1,5 +1,5 @@
 import { useState} from 'react'
-import './App.css'
+import './styles.css'
 import Header from './Components/Header'
 import ButtonsComponent from './Components/ButtonsComponent'
 
@@ -14,7 +14,7 @@ function App() {
     <div className='wrapper'>
       <img className='tableImg' src="src\assets\table5.jpg" alt="table background img" />
             <div className='container'>
-              <img className='phoneImg' src="src\assets\iphonescreen.png" alt="iphone background picture"/>
+              <img className='phoneImg' src="src\assets\iphone.svg" alt="iphone background picture"/>
               <div>
                     <Header currentValue={lowerNumber} savedValue={upperLabel}/>
                     <div className='allButtons'>

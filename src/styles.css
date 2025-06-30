@@ -23,8 +23,8 @@
 
 .phoneImg {
   position: absolute;
-  height: 700px;
-  width: 380px;
+  height: 800px;
+  width: 450px;
   z-index: -1;
 }
 
